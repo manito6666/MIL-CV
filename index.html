@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mi CV - M N</title>
+<style>
+/* ===== RESET ===== */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; scroll-behavior: smooth; background: #efefef; color: #f0f0f0; }
+
+/* ===== HEADER HERO ===== */
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(6px);
+  transition: 0.3s all;
+}
+header.shrink { padding: 0.5rem 2rem; background: rgba(0,0,0,0.85); }
+header nav a { margin-left: 1.5rem; text-decoration: none; color: #f0f0f0; font-weight: bold; transition: 0.3s; }
+header nav a:hover { color: #090f13; }
+#langSwitch { cursor: pointer; padding: 0.3rem 0.8rem; border: 1px solid #f0f0f0; border-radius: 5px; }
+
+/* ===== HERO ===== */
+.hero {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 120px 20px 60px;
+  background: linear-gradient(120deg, #52516b, #848adb, #a2b1e8, #b1b8ca, #c1b4d4, #a3b5d1, #0f0c14);
+  background-size: 400% 400%;
+  animation: gradientBG 16s ease infinite;
+}
+@keyframes gradientBG {
+  0% {background-position:0% 50%;}
+  50% {background-position:100% 50%;}
+  100% {background-position:0% 50%;}
+}
+
+/* ===== HERO: TEXTO ===== */
+.hero-text {
+  flex: 1;
+  min-width: 280px;
+  max-width: 600px;
+  text-align: left;
+}
+.hero-text h1 { font-size: 3rem; font-weight: 700; margin-bottom: 0.8rem; }
+.hero-text h3 { font-size: 1.5rem; font-weight: 500; color: #283f4e; margin-bottom: 1.2rem; }
+.hero-text p { line-height: 1.7; color: #100c0c; margin-bottom: 2rem; }
+.hero-text button { background:#66c2ff; color:#0f0c14; padding:0.7rem 1.5rem; border-radius:10px; font-weight:600; border:none; cursor:pointer; transition:0.3s; }
+.hero-text button:hover { transform: translateY(-2px); }
+
+/* ===== HERO: TARJETA PERFIL ===== */
+.hero-card {
+  flex: 0.8;
+  min-width: 260px;
+  max-width: 350px;
+  background: rgba(100, 122, 144, 0.2); /* color distinto */
+  border-radius: 20px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow:0 10px 30px rgba(0,0,0,0.5);
+  transition: transform 0.3s;
+}
+.hero-card img { width:130px; height:130px; border-radius:50%; border:3px solid #66c2ff; margin-bottom:1rem; }
+.hero-card h2 { margin-bottom:0.5rem; }
+.hero-card p { margin-bottom:0.5rem; color:#f0f0f0; }
+.hero-card a { color:#0f0c14; font-weight:bold; text-decoration:none; }
+.hero-card button { margin-top:1rem; background:#66c2ff; color:#0f0c14; border-radius:10px; padding:0.7rem 1.5rem; font-weight:600; border:none; cursor:pointer; }
+
+/* ===== SECCIONES ===== */
+section {
+  padding: 80px 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  text-align: center;
+  border-radius: 15px;
+}
+
+/* ===== PROYECTOS ===== */
+.project-section {
+  margin: 40px auto;
+  padding: 2rem;
+  border-radius: 12px;
+  background: rgba(21, 14, 14, 0.4);
+  max-width: 800px;
+  box-shadow: 0 5px 15px rgba(175, 95, 95, 0.3);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.project-section:hover { 
+  transform: translateY(-5px); 
+  box-shadow: 0 10px 25px rgba(0,0,0,0.6); 
+}
+
+.project-section img {
+  max-width: 100%;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  transition: transform 0.3s, box-shadow 0.3s;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.project-section img:hover { 
+  transform: scale(1.05); 
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+}
+
+.project-section button {
+  background: #66c2ff;
+  color: #0f0c14;
+  padding: 0.7rem 1.5rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.3s, background 0.3s;
+}
+
+.project-section button:hover {
+  transform: translateY(-2px);
+  background: #55a0d1;
+}
+
+
+/* ===== HABILIDADES ===== */
+.skills-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; margin-top: 1rem; }
+.skill { background: rgba(0,0,0,0.4); padding: 0.7rem 1.2rem; border-radius: 8px; font-weight: bold; transition: 0.3s; }
+.skill:hover { background: rgba(102, 194, 255,0.3); }
+
+/* ===== EDUCACION & EXPERIENCE ===== */
+.edu-exp { display: flex; flex-wrap: wrap; justify-content: center; gap:2rem; margin-top:2rem; }
+.edu-exp div { flex: 1; min-width:280px; max-width:400px; background: rgba(0,0,0,0.4); padding: 1.5rem; border-radius: 12px; }
+.edu-exp h3 { color:#66c2ff; margin-bottom:0.5rem; }
+
+/* ===== CONTACTO ===== */
+.contact a { display: inline-block; margin-right: 1rem; color: #66c2ff; text-decoration: none; font-weight: bold; }
+.contact a:hover { text-decoration: underline; }
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:768px){ 
+  .hero { flex-direction: column; }
+  .edu-exp { flex-direction: column; align-items: center; }
+  header { flex-direction: column; gap:0.5rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ===== HEADER ===== -->
+<header id="header">
+  <div><strong>MC</strong></div>
+  <nav>
+    <a href="#about">Sobre mí</a>
+    <a href="#projects">Proyectos</a>
+    <a href="#skills">Habilidades</a>
+    <a href="#education">Educación</a>
+    <a href="#experience">Experiencia</a>
+    <a href="#contact">Contacto</a>
+    <span id="langSwitch">EN</span>
+  </nav>
+</header>
+
+<!-- ===== HERO ===== -->
+<section class="hero" id="about">
+  <div class="hero-text">
+    <h1>Hola, soy Milton</h1>
+    <h3>Estudiante de Ciberseguridad</h3>
+    <p>Aprendo experimentando y resolviendo desafíos reales. Abordo los problemas con curiosidad y perseverancia, siempre buscando entender a fondo y mejorar continuamente.</p>
+    <button onclick="window.open('CV_ES.pdf','_blank')">Descargar CV</button>
+  </div>
+  <div class="hero-card">
+   <!-- <img src="assets/perfil.jpg" alt="Foto de perfil"> -->
+    <h2></h2>
+    <p>Ciberseguridad | Redes</p>
+    <p><a href="mailto:mq744033@gmail.com">mq744033@gmail.com</a></p>
+    <p><a href="https://www.linkedin.com/in/4d494c4c45/" target="_blank">LinkedIn</a></p>
+  
+  </div>
+</section>
+
+<!-- ===== PROYECTOS ===== -->
+<section id="projects">
+  <h2>Proyectos Destacados</h2>
+  <div class="project-section">
+    <img src="assets/MPLS_topology.jpg" alt="MPLS VPN">
+    <h3>MPLS VPN</h3>
+    <p>Diseño e implementación de una topología MPLS VPN funcional usando Cisco, BGP y VRFs para clientes aislados.</p>
+    <button onclick="window.location.href='proyectos/mpls_vpn.html'">Ver Proyecto</button>
+  </div>
+  <div class="project-section">
+    <img src="assets/Linux_servers.png" alt="Servidores Linux">
+    <h3>Servidores Linux Seguros</h3>
+    <p>Configuración de dos servidores Linux: servicios web, monitorización y políticas de seguridad avanzadas.</p>
+    <button onclick="window.location.href='proyectos/linux_servers.html'">Ver Proyecto</button>
+  </div>
+  <div class="project-section">
+    <img src="assets/VPN_windows.png" alt="VPN Windows Server">
+    <h3>VPN Windows Server</h3>
+    <p>Instalación de una VPN SSL en Windows Server con validación de acceso a la red desde un cliente.</p>
+    <button onclick="window.location.href='proyectos/vpn_windows.html'">Ver Proyecto</button>
+  </div>
+</section>
+
+<!-- ===== HABILIDADES ===== -->
+<section id="skills">
+  <h2>Habilidades</h2>
+  <div class="skills-container">
+    <div class="skill">Redes</div>
+    <div class="skill">Linux</div>
+    <div class="skill">Nmap</div>
+    <div class="skill">Python</div>
+  </div>
+</section>
+
+<!-- ===== EDUCACION ===== -->
+<section id="education">
+  <h2>Educación</h2>
+  <div class="edu-exp">
+    <div>
+      <h3>Igieneria en Ciberseguridad</h3>
+      <p>ITESO, Aug 2023 - Dec 2027</p>
+    </div>
+    <div>
+      <h3>Agile fundamentals</h3>
+      <p>Santander | Open academy | 2025</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXPERIENCIA ===== -->
+<section id="experience">
+  <h2>Experiencia</h2>
+  <div class="edu-exp">
+    <div>
+      <h3>Sales and customer service  |Teleperformance</h3>
+      <p>At TP, I handled customer support calls and used sales techniques to help keep customers satisfied. I took regular training to learn support tools and improve how I manage clients.</p>
+    </div>
+    <div>
+      <h3>Introduction cybersecurity</h3>
+      <p>Cisco Academy | 2025</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACTO ===== -->
+<section id="contact">
+  <h2>Contacto</h2>
+  <p>Puedes escribirme a mi correo o visitar mis perfiles profesionales:</p>
+  <div class="contact" style="display:flex; justify-content:center; gap:2rem; flex-wrap:wrap; margin-top:20px;">
+    <a href="mailto:mq744033@gmail.com">Email</a>
+    <a href="https://www.linkedin.com/in/4d494c4c45/" target="_blank">LinkedIn</a>
+  </div>
+</section>
+
+<!-- ===== JS ===== -->
+<script>
+// Hero se encoge al hacer scroll
+window.addEventListener('scroll', () => {
+  const header = document.getElementById('header');
+  if(window.scrollY > 80) header.classList.add('shrink');
+  else header.classList.remove('shrink');
+});
+
+// Cambio de idioma simple
+const switchBtn = document.getElementById('langSwitch');
+let lang = 'es';
+switchBtn.addEventListener('click', ()=> {
+  lang = (lang==='es') ? 'en' : 'es';
+  document.querySelectorAll('.lang').forEach(el=> {
+    el.innerText = el.getAttribute('data-'+lang);
+  });
+  switchBtn.innerText = (lang==='es') ? 'EN' : 'ES';
+});
+</script>
+
+</body>
+</html>

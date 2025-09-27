@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>MPLS VPN - M N</title>
+
+
+
+<style>
+/* ===== RESET & BASE ===== */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height:1.45;
+  color:#f0f0f0;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+
+  /* estilo original (constante) */
+  min-height:100vh;
+  background: linear-gradient(135deg, #2E2B5F, #1C3A2E, #3A1C3F, #1C3A2E);
+  background-size: 400% 400%;
+  animation: gradientBG 20s ease infinite;
+  padding-top:72px; /* espacio para header fijo */
+}
+@keyframes gradientBG { 0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%} }
+
+/* ===== HEADER (navegación por secciones) ===== */
+header{
+  position:fixed;top:0;left:0;right:0;height:72px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 1.6rem; gap:1rem;
+  background:rgba(0,0,0,0.65);backdrop-filter:blur(6px); z-index:120;
+  border-bottom:1px solid rgba(255,255,255,0.03);
+}
+header .brand{font-weight:800;letter-spacing:.6px}
+nav.primary{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+nav.primary a{
+  color: #f0f0f0; text-decoration:none; font-weight:700;
+  padding:.45rem .6rem; border-radius:6px; transition:all .18s ease;
+}
+nav.primary a:hover{ color:#1c1c1c; background:#ffa066; transform:translateY(-2px) }
+#langSwitch{cursor:pointer;padding:.35rem .65rem;border-radius:6px;border:1px solid rgba(255,255,255,0.08);}
+
+/* ===== LAYOUT: container central estilo "blog cómodo" ===== */
+.main-wrap{max-width:1000px;margin:32px auto;padding:1rem; display:grid;grid-template-columns: 1fr 320px; gap:24px;}
+@media(max-width:980px){ .main-wrap{grid-template-columns:1fr; padding:1rem} }
+
+/* ===== ARTICLE CARD ===== */
+.card{
+  background: rgba(0,0,0,0.55);
+  border-radius:12px;
+  padding:1.6rem;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  color:#eef2f7;
+}
+
+
+/* ===== SIDEBAR (Índice y datos rápidos) ===== */
+.sidebar{ position:relative; height:fit-content; }
+.sidebar .meta{ background: rgba(255,255,255,0.03); padding:1rem; border-radius:10px; margin-bottom:1rem; color:#f1f6fb }
+.toc{ background: rgba(255,255,255,0.03); padding:1rem; border-radius:10px; }
+.toc h4{ margin-bottom:.6rem; color:#ffd1a3; }
+.toc a{ display:block; color:#e8eef6; text-decoration:none; padding:.3rem 0; font-weight:600 }
+.toc a:hover{ color:#ffa066 }
+
+/* ===== HEADINGS & TEXT ===== */
+h1,h2,h3{ color:#ffd1a3 }
+h1{ font-size:1.6rem; margin-bottom:.4rem }
+h2{ font-size:1.15rem; margin-top:1rem; margin-bottom:.6rem }
+h3{ margin-top:.8rem; margin-bottom:.4rem; color:#ffd1a3 }
+p { margin-bottom:.9rem; color:#e8eef6; }
+
+/* ===== BLOCKS: pre / code / details ===== */
+pre{ background: rgba(0,0,0,0.6); padding:.9rem; border-radius:8px; overflow:auto; color:#dff1ff; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace; font-size:0.92rem; margin-bottom:.8rem }
+.kv{ font-family:inherit; font-size:.95rem }
+.details{ margin:.6rem 0; }
+details{ background: rgba(255,255,255,0.02); padding:.5rem; border-radius:8px; border:1px solid rgba(255,255,255,0.02) }
+summary{ cursor:pointer; font-weight:700; color:#ffdca8; padding:.2rem; outline:none }
+small.note{ color:#cfe8ff; display:block; margin-top:.45rem }
+
+/* ===== BOTONES & LINKS ===== */
+a.btn{ display:inline-block; background:#ffa066; color:#1b1b1b; padding:.55rem .9rem; border-radius:8px; font-weight:800; text-decoration:none; }
+a.btn:hover{ background:#ff8c3d; transform:translateY(-2px) }
+.copy-btn{ background:transparent; border:1px solid rgba(255,255,255,0.07); color:#dff1ff; padding:.28rem .5rem; border-radius:6px; cursor:pointer; margin-left:.6rem }
+
+/* ===== EVIDENCE GRID (thumbnails) ===== */
+.evidence{ display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:.6rem }
+@media(max-width:520px){ .evidence{ grid-template-columns:1fr } }
+.evidence img{ width:100%; border-radius:8px; border:1px solid rgba(255,255,255,0.04) }
+
+/* ===== FOOT (compact) ===== */
+.footer-note{ margin-top:1rem; font-size:.9rem; color:#cfe8ff; }
+
+/* ===== SCROLL BEHAVIOR (smooth) ===== */
+html { scroll-behavior: smooth; }
+/* ===== SLIDER / CARRUSEL ===== */
+.slider {
+  position: relative;
+  max-width: 100%;
+  margin: 1.2rem 0;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+}
+
+.slider .slides {
+  display: flex;
+  transition: transform 0.4s ease-in-out;
+}
+
+.slider .slides img {
+  width: 100%;
+  flex-shrink: 0;
+  border-radius: 8px;
+}
+
+.slider button {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0,0,0,0.55);
+  border: none;
+  color: #fff;
+  font-size: 1.6rem;
+  padding: 0.35rem 0.7rem;
+  cursor: pointer;
+  border-radius: 6px;
+  z-index: 10;
+  transition: background 0.2s;
+}
+
+.slider button:hover {
+  background: rgba(255,160,102,0.9);
+}
+
+.slider .prev { left: 8px; }
+.slider .next { right: 8px; }
+
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="brand"><strong>M N</strong></div>
+
+  <nav class="primary" aria-label="Navegación principal">
+    <!-- enlaces hacia el index.html -->
+    <a href="../index.html#about">Sobre mí</a>
+    <a href="../index.html#projects">Proyectos</a>
+    <a href="../index.html#skills">Habilidades</a>
+    <a href="../index.html#contact">Contacto</a>
+    <span id="langSwitch" title="Cambiar idioma">EN</span>
+  </nav>
+</header>
+
+
+<!-- MAIN WRAP: contenido + sidebar -->
+<main class="main-wrap">
+
+  <!-- CONTENIDO PRINCIPAL (estilo "blog cómodo") -->
+  <article class="card" role="article" aria-labelledby="titulo-principal">
+    <h1 id="titulo-principal">MPLS VPN — Diseño & Implementación</h1>
+    <p class="kv small">Proyecto realizado en laboratorio (GNS3). Tecnologías: MPLS, LDP, MP-BGP (VPNv4), VRF, EIGRP. Objetivo: aislamiento por cliente y forwarding vía etiquetas.</p>
+
+    <!-- INTRO -->
+    <section id="intro" aria-labelledby="h-intro">
+      <h2 id="h-intro">1. Introducción</h2>
+      <p>Este proyecto consistió en diseñar e implementar una topología MPLS VPN para ofrecer comunicaciones privadas y aisladas a múltiples clientes (CustomerA, CustomerB) sobre una infraestructura compartida. Se validó convergencia del backbone con EIGRP, distribución de rutas VPNv4 mediante MP-BGP, y forwarding mediante MPLS labels.</p>
+    </section>
+<!-- Slider: solo cambia las imágenes -->
+<div class="slider">
+  <div class="slides">
+    <img src="images/vpn1.png" alt="R1: show ip eigrp neighbors">
+    <img src="images/vpn2.png" alt="PE-R4: show mpls forwarding-table">
+    <img src="images/vpn3.png" alt="CE: show ip bgp summary">
+  </div>
+  <button class="prev">&#10094;</button>
+  <button class="next">&#10095;</button>
+</div>
+
+    <!-- MARCO TEORICO -->
+    <section id="teoria" aria-labelledby="h-teoria">
+      <h2 id="h-teoria">2. Marco teórico (resumen)</h2>
+      <p><strong>MPLS:</strong> reenvío rápido por etiquetas. <strong>VRF:</strong> tablas de ruteo independientes por cliente. <strong>MP-BGP:</strong> intercambio de rutas VPNv4 entre PEs. <strong>EIGRP:</strong> IGP del proveedor para convergencia interna.</p>
+      <p class="small">Si necesitas que convierta esto a diapositivas o un documento técnico más formal, lo hago.</p>
+    </section>
+
+    <!-- CONFIGURACION -->
+    <section id="config" aria-labelledby="h-config">
+      <h2 id="h-config">3. Pasos de configuración</h2>
+      <p>Dividí la configuración en 3 bloques: <em>Core</em> (R1,R2,R3), <em>PE</em> (PE-R4, PE-R5, PE-R6) y <em>CE</em> (CustomerA/B). > Cada bloque tiene snippets copiable. Usa los <strong>details</strong> para expandir.</p>
+
+      <details class="details">
+        <summary>3.1 Core routers — ejemplo (R1)</summary>
+        <pre><code>
+! Habilitar MPLS y LDP
+mpls ip
+mpls label protocol ldp
+
+interface Loopback0
+ ip address 10.255.255.1 255.255.255.255
+ no shutdown
+ mpls ldp router-id Loopback0
+
+interface f0/0
+ ip address 10.1.10.1 255.255.255.252
+ no shutdown
+ mpls ip
+
+interface f0/1
+ ip address 10.1.20.1 255.255.255.252
+ no shutdown
+ mpls ip
+
+router eigrp 100
+ network 10.255.255.1 0.0.0.0
+ network 10.1.10.0 0.0.0.3
+ network 10.1.20.0 0.0.0.3
+ no auto-summary
+        </code></pre>
+        <small class="note">Botones: copia rápido con el botón "Copiar configuración" abajo.</small>
+        <button class="copy-btn" data-target="core-r1">Copiar configuración</button>
+      </details>
+
+      <details class="details">
+        <summary>3.2 PE routers — VRFs & MP-BGP (ejemplo)</summary>
+        <pre id="core-r1"><code>
+! PE example - VRFs and MP-BGP
+mpls ip
+mpls label protocol ldp
+
+interface Loopback0
+ ip address 10.255.255.11 255.255.255.255
+ no shutdown
+ mpls ldp router-id Loopback0
+
+interface f0/0
+ ip address 10.1.10.5 255.255.255.252
+ no shutdown
+ mpls ip
+
+interface f0/1
+ ip vrf forwarding customerA
+ ip address 172.16.1.1 255.255.255.252
+ no shutdown
+
+ip vrf customerA
+ rd 100:1
+ route-target export 100:1
+ route-target import 100:1
+
+router bgp 400
+ neighbor 10.255.255.1 remote-as 400
+ neighbor 10.255.255.1 update-source Loopback0
+
+ address-family vpnv4
+  neighbor 10.255.255.1 activate
+  neighbor 10.255.255.1 send-community both
+  neighbor 10.255.255.1 next-hop-self
+ exit-address-family
+        </code></pre>
+        <button class="copy-btn" data-target="core-r1">Copiar configuración</button>
+      </details>
+
+      <details class="details">
+        <summary>3.3 CE routers — BGP contra el PE (ejemplo CustomerA)</summary>
+        <pre><code>
+! CE (CustomerA)
+interface Loopback0
+ ip address 192.168.2.1 255.255.255.0
+
+interface f0/0
+ ip address 172.16.1.2 255.255.255.252
+ no shutdown
+
+ip route 0.0.0.0 0.0.0.0 172.16.1.1
+
+router bgp 65100
+ network 192.168.2.0 mask 255.255.255.0
+ neighbor 172.16.1.1 remote-as 400
+ no auto-summary
+        </code></pre>
+        <button class="copy-btn" data-target="core-r1">Copiar configuración</button>
+      </details>
+    </section>
+
+    <!-- VERIFICACION -->
+    <section id="verificacion" aria-labelledby="h-verificacion">
+      <h2 id="h-verificacion">4. Verificación y pruebas</h2>
+      <p>Comandos esenciales y qué buscar:</p>
+      <ul>
+        <li><code>show ip eigrp neighbors</code> — adyacencias EIGRP.</li>
+        <li><code>show mpls forwarding-table</code> — comprobación de etiquetas.</li>
+        <li><code>show ip bgp vpnv4 all</code> — rutas VPNv4 en PE.</li>
+        <li><code>ping vrf customerA &lt;ip&gt;</code> y <code>traceroute vrf customerA &lt;ip&gt;</code> — validar forwarding y ocultamiento de hops.</li>
+      </ul>
+
+      <details>
+        <summary>Comandos y salidas relevantes (ejemplos)</summary>
+        <pre><code>
+! ej: verificar etiquetas
+show mpls forwarding-table
+
+! ej: verificar BGP vpnv4 en PE
+show ip bgp vpnv4 all
+        </code></pre>
+      </details>
+    </section>
+
+    <!-- EVIDENCIA -->
+    <section id="evidencia" aria-labelledby="h-evidencia">
+      <h2 id="h-evidencia">5. Evidencia</h2>
+      <p>Incluye capturas de pantalla de las salidas listadas abajo. Si me indicas los nombres de archivo puedo insertarlas en esta página.</p>
+
+      <div class="card" style="background:rgba(0,0,0,0.35);padding:.8rem;margin-bottom:.6rem">
+        <strong>Lista sugerida de evidencia:</strong>
+        <ul>
+          <li>R1: <code>show ip eigrp neighbors</code></li>
+          <li>PE-R4: <code>show mpls forwarding-table</code></li>
+          <li>PE-R4/PE-R6: <code>show ip bgp vpnv4 all</code></li>
+          <li>CE: <code>show ip bgp summary</code> y pings entre CE</li>
+          <li>Traceroutes vrf y capturas de flujo con etiquetas</li>
+        </ul>
+      </div>
+
+      <div class="evidence" id="evidence-grid">
+        <!-- placeholder: si me das nombres, inserto las <img src="assets/archivo.png"> aquí -->
+      </div>
+    </section>
+
+    <!-- CONCLUSIONES -->
+    <section id="conclusiones" aria-labelledby="h-conclusiones">
+      <h2 id="h-conclusiones">6. Conclusiones y retos</h2>
+      <p>Resumen práctico: el proyecto demostró cómo aislar tráfico por cliente con VRFs y MP-BGP, y cómo MPLS simplifica el forwarding mediante etiquetas. Retos comunes: RD/RT inconsistentes, redes no anunciadas en BGP/EIGRP y errores de máscara en interfaces.</p>
+      <p class="footer-note">El desarrollo más detallado en el pdf</p>
+    </section>
+
+    <!-- REFERENCIAS + seguridad -->
+    <section aria-labelledby="h-referencias">
+      <h2 id="h-referencias">7. Referencias y seguridad</h2>
+      <p>Referencias principales usadas: GNS3 community (MPLS L2/L3), documentación Cisco (per-VRF BGP router-id), artículos técnicos sobre MPLS.</p>
+
+      <details>
+        <summary>Comandos de seguridad (ejemplo)</summary>
+        <pre><code>
+service password-encryption
+enable secret cisco123
+username admin privilege 15 secret admin
+line vty 0 4
+ login local
+        </code></pre>
+      </details>
+
+      <p style="margin-top:.8rem"><a class="btn" href="../index.html#projects">← Volver al portafolio</a></p>
+    </section>
+  </article>
+
+  <!-- SIDEBAR: índice rápido, datos y acciones -->
+  <aside class="sidebar">
+    <div class="toc card" aria-labelledby="toc-title">
+      <h4 id="toc-title">Índice rápido</h4>
+      <a href="#intro">Introducción</a>
+      <a href="#teoria">Marco teórico</a>
+      <a href="#config">Configuración</a>
+      <a href="#verificacion">Verificación</a>
+      <a href="#evidencia">Evidencia</a>
+      <a href="#conclusiones">Conclusiones</a>
+      <hr style="border:none;height:8px;background:transparent;margin:.6rem 0;">
+      <div class="meta">
+        <strong>Duración:</strong> 2 semanas (lab) <br>
+        <strong>Herramientas:</strong> GNS3, IOS (Cisco), Wireshark<br>
+        <small class="small">Contacto: mq744033@gmail.com</small>
+      </div>
+ <a href="/proyectos/MPLS.pdf" download>
+  <button class="btn">Descargar Documentacion</button>
+</a>
+
+    </div>
+  </aside>
+
+</main>
+
+<!-- SCRIPTS: copiado, toggles y descargas -->
+<script>
+/* Copiar bloques (botones .copy-btn) */
+document.querySelectorAll('.copy-btn').forEach(btn=>{
+  btn.addEventListener('click', async (e)=>{
+    // busca el <pre> anterior al botón
+    const details = btn.closest('details');
+    const pre = details ? details.querySelector('pre') : null;
+    if(!pre) return;
+    const text = pre.innerText;
+    try {
+      await navigator.clipboard.writeText(text);
+      btn.textContent = 'Copiado ✓';
+      setTimeout(()=> btn.textContent = 'Copiar configuración',1500);
+    } catch(err){
+      btn.textContent = 'Error';
+      setTimeout(()=> btn.textContent = 'Copiar configuración',1500);
+    }
+  });
+});
+
+/* Botón descargar MD (genera un markdown rápido con los títulos principales) */
+document.getElementById('download-md').addEventListener('click', ()=>{
+  const mdLines = [];
+  mdLines.push('# MPLS VPN — Resumen\n');
+  document.querySelectorAll('article h2').forEach(h=>{
+    mdLines.push('## ' + h.innerText + '\n');
+    // agrega un párrafo corto si existe
+    const p = h.nextElementSibling && h.nextElementSibling.tagName === 'P' ? h.nextElementSibling.innerText : '';
+    if(p) mdLines.push(p + '\n');
+  });
+  const blob = new Blob([mdLines.join('\n')], {type:'text/markdown'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = 'MPLS_VPN_summary.md'; document.body.appendChild(a); a.click();
+  URL.revokeObjectURL(url); a.remove();
+});
+
+/* Small: alternar idioma (solo texto estático en esta página demo) */
+const switchBtn = document.getElementById('langSwitch');
+let lang = 'es';
+switchBtn.addEventListener('click', ()=>{
+  lang = (lang==='es') ? 'en' : 'es';
+  // si quieres, puedo traducir automáticamente todo; por ahora solo cambio el texto del switch
+  switchBtn.innerText = (lang==='es') ? 'EN' : 'ES';
+});
+
+/* Accessibility: focus visible for keyboard users */
+document.addEventListener('keydown',(e)=> {
+  if(e.key === 'Tab') document.documentElement.style.scrollBehavior = 'smooth';
+});
+document.querySelectorAll('.slider').forEach(slider=>{
+  const slides = slider.querySelector('.slides');
+  const imgs = slides.querySelectorAll('img');
+  let index = 0;
+  const prev = slider.querySelector('.prev');
+  const next = slider.querySelector('.next');
+
+  function showSlide(i){
+    if(i<0) index=imgs.length-1;
+    else if(i>=imgs.length) index=0;
+    else index=i;
+    slides.style.transform = `translateX(-${index*100}%)`;
+  }
+
+  prev.addEventListener('click', ()=>showSlide(index-1));
+  next.addEventListener('click', ()=>showSlide(index+1));
+});
+
+</script>
+
+</body>
+</html>
